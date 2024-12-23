@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a4a8a;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #4a4a8a;
+        }
+
+        div {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4a4a8a;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #37376f;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="radio"] {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="radio"] {
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4a4a8a;
+            color: #fff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .success-alert {
+            padding: 10px;
+            margin-bottom: 15px;
+            color: rgb(255, 0, 0);
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            form {
+                padding: 10px;
+            }
+
+            button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div>
+    
+        <div th:if="${success}" class="success-alert" th:text="${success}"></div>
+        <div th:if="${error}" class="success-alert" th:text="${error}"></div>
+        
+        <h1>Welcome to Dashboard</h1>
+
+        <div>
+            <a href="register"><button>Register</button></a>
+            <a href="fetch"><button>View Records</button></a>
+        </div>
+
+        <div th:if="${add}">
+            <h2>Register New Record</h2>
+            <form action="/register" method="post">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Enter Name" required>
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input type="email" name="email"  placeholder="Enter Email" required>
+                </div>
+                <div>
+                    <label>Gender</label>
+                    <div>
+                        <label>
+                            <input type="radio" name="gender" value="male"> Male
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female"> Female
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label>Mobile</label>
+                    <input type="tel" name="mobile" placeholder="Enter Mobile Number" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+        </div>
+
+        <div th:if="${edit}">
+            <h2>Edit Records</h2>
+            <form action="/update" method="post">
+                <div>
+                    <label>Roll No</label>
+                    <input type="text" name="id" th:value="${emp.id}" readonly>
+                </div>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name" th:value="${emp.name}" required>
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input type="email" name="email" th:value="${emp.email}" required>
+                </div>
+                <div>
+                    <label>Gender</label>
+                    <div>
+                        <label>
+                            <input type="radio" name="gender" value="male" th:checked="${emp.gender == 'male'}"> Male
+                        </label>
+                        <label>
+                            <input type="radio" name="gender" value="female" th:checked="${emp.gender == 'female'}"> Female
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label>Mobile</label>
+                    <input type="tel" name="mobile" th:value="${emp.mobile}" required>
+                </div>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+
+        <div th:if="${records}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Roll No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                        <th>Mobile</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="emp:${records}">
+                        <td th:text="${emp.id}"></td>
+                        <td th:text="${emp.name}"></td>
+                        <td th:text="${emp.email}"></td>
+                        <td th:text="${emp.gender}"></td>
+                        <td th:text="${emp.mobile}"></td>
+                        <td>
+                            <a th:href="'/edit?id='+${emp.id}"><button>Edit</button></a>
+                            <a th:href="'/delete?id='+${emp.id}"><button>Delete</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script th:if="${success}" th:inline="javascript">
+        setTimeout(() => {
+            const alert = document.querySelector('.success-alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 3000);
+    </script>
+    
+     <script th:if="${error}" th:inline="javascript">
+        setTimeout(() => {
+            const alert = document.querySelector('.success-alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 3000);
+    </script>
+    
+    <a href="/logout"><button>Logout</button></a>
+</body>
+</html>
+ 
+
+  

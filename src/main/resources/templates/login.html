@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+       /* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+/* Success alert styling */
+.success-alert {
+    position: fixed; /* Make it stay at the top of the screen */
+    top: 20px;
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    background-color: #FFCCCB; /* Light green background */
+    color: #155724; /* Dark green text */
+    border: 1px solid #c3e6cb;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth fade and slide */
+}
+
+/* Form container styling */
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Heading styling */
+form h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Input fields styling */
+form input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Button styling */
+form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 500px) {
+    form {
+        padding: 20px;
+    }
+}
+
+        
+        
+    </style>
+</head>
+<body>
+
+		<div th:if="${error}" class="success-alert" th:text="${error}"></div>
+		
+		<div th:if="${success}" class="success-alert" th:text="${success}"></div>
+		
+	    <form action="/login" method="post">
+    
+        <h1>Login</h1>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+    
+    
+   
+    
+    
+    
+    <script th:if="${success}" th:inline="javascript">
+        setTimeout(() => {
+            const alert = document.querySelector('.success-alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 3000);
+    </script>
+   
+    
+     <script th:if="${error}" th:inline="javascript">
+        setTimeout(() => {
+            const alert = document.querySelector('.success-alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 3000);
+    </script>
+    
+</body>
+</html>
+
+
+
+
+
+
